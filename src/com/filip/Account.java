@@ -4,16 +4,32 @@ import java.math.*;
 
 public class Account {
 
+    private String currency;
     private String name;
-    private double balance;
+    private BigInteger balance; // balance in cents
 
-    public Account(double balance) {
-        this("default account", balance);
+
+    public Account(String currency, String name, double balance) {
+        this.currency=currency;
+        this.name = name;
+        this.balance = convert(balance);
+
     }
 
-    public Account(String name, double balance) {
-        this.name = name;
-        this.balance = balance;
+    //method for rounding the balance up to 2 decimal points
+    public static BigDecimal round(double value) {
+
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
+        return bd;
+    }
+
+    // method for converting the double value to BigInteger value
+    public static BigInteger convert(double value) {
+
+        BigDecimal bd = new BigDecimal(100);
+        BigInteger bi = round(value).multiply(bd).toBigInteger();
+        return bi;
     }
 
     public String getName() {
@@ -24,41 +40,35 @@ public class Account {
         this.name = name;
     }
 
-    public double getBalance() {
+    public BigInteger getBalance() {
         return this.balance;
     }
 
-    public void deposit (double amount) {
-        this.balance+=amount;
-    }
-
-    public void withdrawal (double amount) {
-        if (amount > this.balance) {
-            System.out.println("Not enough funds");
+    public void deposit(double amount) {
+        if (amount <= 0) {
+            System.out.println("Wrong value");
         } else {
-            this.balance -= amount;
+            this.balance = getBalance().add(convert(amount));
         }
     }
 
-    //method for rounding the balance up to 2 decimal points
-    public static double round(double value, int places) {
-        if (places < 0) throw new IllegalArgumentException();
-
-        BigDecimal bd = new BigDecimal(value);
-        bd = bd.setScale(places, RoundingMode.HALF_UP);
-        return bd.doubleValue();
+    public void withdrawal(double amount) {
+        if (this.balance.doubleValue() / 100 < amount) {
+            System.out.println("Not enough funds");
+        } else {
+            this.balance = getBalance().subtract(convert(amount));
+        }
     }
 
     //method for printing balance with 2 decimal points
-    public String printBalance(){
-        double balance = round(getBalance(),2);
-        return String.format("%.2f", balance);
-
+    public String printBalance() {
+        double doubleBalance = this.balance.doubleValue() / 100;
+        return String.format("%.2f", doubleBalance);
     }
 
     @Override
     public String toString() {
-        return "Account named '" + this.getName() + "'  has "
-                + printBalance() + " funds";
+        return "Account named '" + this.name + "' has "
+                + printBalance() + " " + this.currency + ".";
     }
 }
