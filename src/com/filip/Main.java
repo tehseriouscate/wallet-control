@@ -6,7 +6,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Account test = new Account("PLN","Test account", 100);
+        Account test = new Account("fra","Test account", 100);
 
         System.out.println(test);
         System.out.println(test.getBalance());

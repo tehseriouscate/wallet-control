@@ -8,9 +8,20 @@ public class Account {
     private String name;
     private BigInteger balance; // balance in cents
 
+    public Account()    {
+        this("$$$", "default", 0);
+    }
 
-    public Account(String currency, String name, double balance) {
-        this.currency=currency;
+    public Account(String currency, String name, double balance) throws IllegalArgumentException {
+
+        if (currency.length()==3)   {
+            this.currency=currency.toUpperCase();
+        }
+        else {
+            throw new IllegalArgumentException("Wrong currency. Currency must contain 3 " +
+                    "letters (eg. PLN, EUR, USD)");
+        }
+
         this.name = name;
         this.balance = convert(balance);
 
@@ -28,8 +39,7 @@ public class Account {
     public static BigInteger convert(double value) {
 
         BigDecimal bd = new BigDecimal(100);
-        BigInteger bi = round(value).multiply(bd).toBigInteger();
-        return bi;
+        return round(value).multiply(bd).toBigInteger();
     }
 
     public String getName() {
@@ -46,7 +56,7 @@ public class Account {
 
     public void deposit(double amount) {
         if (amount <= 0) {
-            System.out.println("Wrong value");
+            System.out.println("Wrong value.");
         } else {
             this.balance = getBalance().add(convert(amount));
         }
@@ -54,7 +64,7 @@ public class Account {
 
     public void withdrawal(double amount) {
         if (this.balance.doubleValue() / 100 < amount) {
-            System.out.println("Not enough funds");
+            System.out.println("Not enough funds.");
         } else {
             this.balance = getBalance().subtract(convert(amount));
         }
