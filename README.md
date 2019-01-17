@@ -1,4 +1,4 @@
-#Wallet Control
+# Wallet Control
 
 Have your budget under control - see where you can cut expenses and start saving money! 
 
