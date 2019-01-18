@@ -4,25 +4,16 @@ import java.math.*;
 
 public class Account {
 
-    private String type;
-    private String owner;
     private String currency;
-    private BigInteger balance; //balance in cents
+    private String name;
+    private BigInteger balance; // balance in cents
 
-    public Account() {
-        this("default", "Jon Doe", "$$$", 0);
+    public Account()    {
+        this("$$$", "default", 0);
     }
 
-    public Account(String type, String owner, String currency, double balance ) throws IllegalArgumentException {
-        this.type=type;
-        this.owner=owner;
+    public Account(String currency, String name, double balance) throws IllegalArgumentException {
 
-        if (balance>=0) {
-            this.balance = convert(balance);
-        }
-        else {throw new IllegalArgumentException("Balance can not be negative.");
-
-        }
         if (currency.length()==3)   {
             this.currency=currency.toUpperCase();
         }
@@ -30,6 +21,10 @@ public class Account {
             throw new IllegalArgumentException("Wrong currency. Currency must contain 3 " +
                     "letters (eg. PLN, EUR, USD)");
         }
+
+        this.name = name;
+        this.balance = convert(balance);
+
     }
 
     //method for rounding the balance up to 2 decimal points
@@ -47,20 +42,16 @@ public class Account {
         return round(value).multiply(bd).toBigInteger();
     }
 
-    public String getType() {
-        return type;
+    public String getName() {
+        return name;
     }
 
-    public String getOwner() {
-        return owner;
-    }
-
-    public String getCurrency() {
-        return currency;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public BigInteger getBalance() {
-        return balance;
+        return this.balance;
     }
 
     public void deposit(double amount) {
@@ -87,7 +78,7 @@ public class Account {
 
     @Override
     public String toString() {
-        return "Account: " + this.type + "\nOwner: " + this.owner + "\nbalance: "
-                + printBalance() + " " + this.currency;
+        return "Account named '" + this.name + "' has "
+                + printBalance() + " " + this.currency + ".";
     }
 }
