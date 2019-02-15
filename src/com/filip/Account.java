@@ -1,6 +1,7 @@
 package com.filip;
 
 import java.math.*;
+import static com.filip.HelperMethods.*;
 
 public class Account {
 
@@ -9,10 +10,12 @@ public class Account {
     private String currency;
     private BigInteger balance; //balance in cents
 
+    //default constructor
     public Account() {
         this("default", "Jon Doe", "$$$", 0);
     }
 
+    //constructor
     public Account(String type, String owner, String currency, double balance ) throws IllegalArgumentException {
         this.type=type;
         this.owner=owner;
@@ -32,20 +35,7 @@ public class Account {
         }
     }
 
-    //method for rounding the balance up to 2 decimal points
-    public static BigDecimal round(double value) {
 
-        BigDecimal bd = new BigDecimal(value);
-        bd = bd.setScale(2, RoundingMode.HALF_UP);
-        return bd;
-    }
-
-    // method for converting the double value to BigInteger value
-    public static BigInteger convert(double value) {
-
-        BigDecimal bd = new BigDecimal(100);
-        return round(value).multiply(bd).toBigInteger();
-    }
 
     public String getType() {
         return type;

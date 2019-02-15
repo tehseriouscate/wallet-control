@@ -1,6 +1,7 @@
 package com.filip;
 
 import java.math.*;
+import static com.filip.HelperMethods.*;
 
 public class SavingAccount extends Account {
 
